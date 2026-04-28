@@ -19,6 +19,128 @@ The idea is simple:
 - Auto pairs handled by VSCode
 - Works on Linux, macOS, WSL and Windows native
 
+## Table of contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Linux, macOS and WSL](#linux-macos-and-wsl)
+  - [Install on Windows native](#install-on-windows-native)
+- [Keybindings](#keybindings)
+  - [Search and navigation](#search-and-navigation)
+  - [Editor navigation](#editor-navigation)
+  - [Code navigation](#code-navigation)
+  - [Terminal, Git and UI](#terminal-git-and-ui)
+  - [Editor splits](#editor-splits)
+- [Common Neovim motions](#common-neovim-motions)
+  - [Basic movement](#basic-movement)
+  - [Searching and jumping](#searching-and-jumping)
+  - [Editing operators](#editing-operators)
+  - [Common text objects](#common-text-objects)
+  - [Copy, paste and undo](#copy-paste-and-undo)
+  - [Visual mode](#visual-mode)
+- [Surround usage](#surround-usage)
+  - [Add surround in visual mode](#add-surround-in-visual-mode)
+  - [Add surround around a word](#add-surround-around-a-word)
+  - [Delete surround](#delete-surround)
+  - [Replace surround](#replace-surround)
+- [Platform setup](#platform-setup)
+  - [Linux](#linux)
+  - [macOS](#macos)
+  - [Windows with WSL](#windows-with-wsl)
+  - [Windows native settings](#windows-native-settings)
+- [Auto pairs](#auto-pairs)
+- [Why not use many Neovim plugins?](#why-not-use-many-neovim-plugins)
+- [Recommended VSCode extensions](#recommended-vscode-extensions)
+- [Updating](#updating)
+- [Uninstall](#uninstall)
+- [Troubleshooting](#troubleshooting)
+  - [VSCode Neovim does not work](#vscode-neovim-does-not-work)
+  - [Surround does not work](#surround-does-not-work)
+  - [Auto pairs do not work](#auto-pairs-do-not-work)
+- [License](#license)
+
+## Requirements
+
+You need:
+
+- VSCode
+- VSCode Neovim extension
+- Neovim
+- Git
+
+Recommended VSCode settings:
+
+```json
+{
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoSurround": "languageDefined"
+}
+```
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/utku-gaspak/vscode-neovim-productivity-kit.git
+cd vscode-neovim-productivity-kit
+```
+
+### Linux, macOS and WSL
+
+Run:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Then open Neovim:
+
+```bash
+nvim
+```
+
+Inside Neovim, run:
+
+```vim
+:Lazy sync
+```
+
+Restart VSCode after installation.
+
+### Install on Windows native
+
+For native Windows, install manually.
+
+Typical Neovim config location:
+
+```txt
+%LOCALAPPDATA%\nvim\init.lua
+```
+
+Create the folder if needed:
+
+```powershell
+mkdir $env:LOCALAPPDATA\nvim
+```
+
+Copy `init.lua` into:
+
+```txt
+%LOCALAPPDATA%\nvim\init.lua
+```
+
+Then open Neovim and run:
+
+```vim
+:Lazy sync
+```
+
+Restart VSCode after installation.
+
 ## Keybindings
 
 The leader key is:
@@ -82,6 +204,236 @@ So `Space s f` means: press `Space`, then `s`, then `f`.
 | `Space w s` | Split editor down |
 | `Space w h` | Focus left editor group |
 | `Space w l` | Focus right editor group |
+
+## Common Neovim motions
+
+This section covers the most useful Vim and Neovim motions for daily coding.
+
+### Basic movement
+
+| Motion | Action |
+|---|---|
+| `h` | Move left |
+| `j` | Move down |
+| `k` | Move up |
+| `l` | Move right |
+| `w` | Move to next word |
+| `b` | Move to previous word |
+| `e` | Move to end of word |
+| `ge` | Move to end of previous word |
+| `0` | Move to beginning of line |
+| `^` | Move to first non-blank character |
+| `$` | Move to end of line |
+| `gg` | Go to top of file |
+| `G` | Go to bottom of file |
+| `{number}G` | Go to line number |
+| `Ctrl d` | Move half page down |
+| `Ctrl u` | Move half page up |
+
+Examples:
+
+```vim
+10G
+```
+
+Go to line 10.
+
+```vim
+Ctrl d
+```
+
+Scroll down half a page.
+
+### Searching and jumping
+
+| Motion | Action |
+|---|---|
+| `/text` | Search forward |
+| `?text` | Search backward |
+| `n` | Next search result |
+| `N` | Previous search result |
+| `*` | Search word under cursor forward |
+| `#` | Search word under cursor backward |
+| `f<char>` | Jump to next character on current line |
+| `F<char>` | Jump to previous character on current line |
+| `t<char>` | Jump before next character on current line |
+| `T<char>` | Jump after previous character on current line |
+| `;` | Repeat last `f`, `F`, `t` or `T` |
+| `,` | Repeat last `f`, `F`, `t` or `T` in reverse |
+| `%` | Jump between matching brackets |
+
+Examples:
+
+```vim
+/foo
+```
+
+Search for `foo`.
+
+```vim
+f)
+```
+
+Jump to the next `)` on the current line.
+
+```vim
+%
+```
+
+Jump between matching `{}`, `()`, `[]`.
+
+### Editing operators
+
+Vim combines operators with motions.
+
+| Operator | Action |
+|---|---|
+| `d` | Delete |
+| `c` | Change |
+| `y` | Yank / copy |
+| `v` | Visual select |
+| `>` | Indent right |
+| `<` | Indent left |
+| `=` | Auto-indent |
+
+Examples:
+
+```vim
+dw
+```
+
+Delete next word.
+
+```vim
+ciw
+```
+
+Change inner word.
+
+```vim
+yiw
+```
+
+Copy inner word.
+
+```vim
+d$
+```
+
+Delete until end of line.
+
+```vim
+gg=G
+```
+
+Auto-indent the whole file.
+
+### Common text objects
+
+Text objects are very useful for editing code.
+
+| Text object | Meaning |
+|---|---|
+| `iw` | Inner word |
+| `aw` | Around word |
+| `i"` | Inside double quotes |
+| `a"` | Around double quotes |
+| `i'` | Inside single quotes |
+| `a'` | Around single quotes |
+| `i)` | Inside parentheses |
+| `a)` | Around parentheses |
+| `i}` | Inside braces |
+| `a}` | Around braces |
+| `it` | Inside HTML/XML tag |
+| `at` | Around HTML/XML tag |
+
+Examples:
+
+```vim
+ci"
+```
+
+Change everything inside double quotes.
+
+```vim
+da)
+```
+
+Delete around parentheses.
+
+```vim
+vi}
+```
+
+Visually select inside braces.
+
+### Copy, paste and undo
+
+| Command | Action |
+|---|---|
+| `yy` | Copy current line |
+| `dd` | Delete current line |
+| `p` | Paste after cursor |
+| `P` | Paste before cursor |
+| `u` | Undo |
+| `Ctrl r` | Redo |
+| `x` | Delete character |
+| `r<char>` | Replace one character |
+| `.` | Repeat last change |
+
+Examples:
+
+```vim
+dd
+p
+```
+
+Move current line down.
+
+```vim
+ciwnewName
+```
+
+Change current word to `newName`.
+
+```vim
+.
+```
+
+Repeat the last edit.
+
+### Visual mode
+
+| Command | Action |
+|---|---|
+| `v` | Character visual mode |
+| `V` | Line visual mode |
+| `Ctrl v` | Block visual mode |
+| `o` | Move to other end of selection |
+| `y` | Copy selection |
+| `d` | Delete selection |
+| `>` | Indent selection right |
+| `<` | Indent selection left |
+
+Examples:
+
+```vim
+V
+j
+>
+```
+
+Select two lines and indent them.
+
+```vim
+Ctrl v
+j
+j
+I//
+Esc
+```
+
+Add `//` to the beginning of multiple selected lines.
 
 ## Surround usage
 
@@ -189,87 +541,6 @@ into:
 {word}
 ```
 
-## Requirements
-
-You need:
-
-- VSCode
-- VSCode Neovim extension
-- Neovim
-- Git
-
-Recommended VSCode settings:
-
-```json
-{
-  "editor.autoClosingBrackets": "always",
-  "editor.autoClosingQuotes": "always",
-  "editor.autoSurround": "languageDefined"
-}
-```
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/utku-gaspak/vscode-neovim-productivity-kit.git
-cd vscode-neovim-productivity-kit
-```
-
-### Linux, macOS and WSL
-
-Run:
-
-```bash
-chmod +x install.sh
-./install.sh
-```
-
-Then open Neovim:
-
-```bash
-nvim
-```
-
-Inside Neovim, run:
-
-```vim
-:Lazy sync
-```
-
-Restart VSCode after installation.
-
-### Windows native
-
-For native Windows, install manually.
-
-Typical Neovim config location:
-
-```txt
-%LOCALAPPDATA%\nvim\init.lua
-```
-
-Create the folder if needed:
-
-```powershell
-mkdir $env:LOCALAPPDATA\nvim
-```
-
-Copy `init.lua` into:
-
-```txt
-%LOCALAPPDATA%\nvim\init.lua
-```
-
-Then open Neovim and run:
-
-```vim
-:Lazy sync
-```
-
-Restart VSCode after installation.
-
 ## Platform setup
 
 ### Linux
@@ -344,7 +615,7 @@ Check your WSL Neovim path:
 which nvim
 ```
 
-### Windows native
+### Windows native settings
 
 Check your Neovim path in PowerShell:
 
@@ -432,6 +703,8 @@ Then open Neovim and run:
 ```
 
 Restart VSCode after updating.
+
+If you installed by copying `init.lua`, pull the repository and copy the updated `init.lua` again.
 
 ## Uninstall
 
