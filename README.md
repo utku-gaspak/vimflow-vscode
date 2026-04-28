@@ -1,124 +1,25 @@
 # VSCode Neovim Productivity Kit
 
-A minimal Neovim configuration for developers who use the **VSCode Neovim** extension and want a smoother Vim-style workflow inside VSCode.
+A minimal Neovim configuration for developers who use the **VSCode Neovim** extension and want a practical Vim-style workflow inside VSCode.
 
-This setup keeps the workflow simple:
+The idea is simple:
 
-- VSCode handles UI, search, Git, terminal, LSP and formatting.
-- Neovim handles modal editing, Vim motions and surround actions.
-- Plugin count stays intentionally low to avoid conflicts and slowdowns.
+- **VSCode** handles UI, search, Git, terminal, LSP and formatting.
+- **Neovim** handles modal editing, Vim motions and text manipulation.
+- Plugin count stays low to avoid conflicts and slowdowns.
 
-## Who is this for?
+## Features
 
-This config is for developers who:
+- Vim motions inside VSCode
+- Practical `Space` leader shortcuts
+- Fast file and project navigation
+- Code navigation shortcuts
+- Git, terminal and UI shortcuts
+- Surround editing with `mini.surround`
+- Auto pairs handled by VSCode
+- Works on Linux, macOS, WSL and Windows native
 
-- use VSCode as their main editor,
-- want Vim motions inside VSCode,
-- want practical leader key shortcuts,
-- want surround support like wrapping text with `{}`, `()`, `""`, etc.,
-- do not want a complex Neovim distribution.
-
-## Requirements
-
-You need:
-
-- Neovim
-- VSCode
-- VSCode Neovim extension
-- Git
-
-Recommended VSCode settings:
-
-```json
-{
-  "editor.autoClosingBrackets": "always",
-  "editor.autoClosingQuotes": "always",
-  "editor.autoSurround": "languageDefined"
-}
-```
-
-If you use WSL, you may also need:
-
-```json
-{
-  "vscode-neovim.useWSL": true,
-  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
-}
-```
-
-Check your Neovim path with:
-
-```bash
-which nvim
-```
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/utku-gaspak/vscode-neovim-productivity-kit.git
-cd vscode-neovim-productivity-kit
-```
-
-Run the installer:
-
-```bash
-chmod +x install.sh
-./install.sh
-```
-
-Then open Neovim:
-
-```bash
-nvim
-```
-
-Inside Neovim, run:
-
-```vim
-:Lazy sync
-```
-
-Finally, restart VSCode.
-
-## Manual installation
-
-If you do not want to use the installer, copy `init.lua` manually:
-
-```bash
-mkdir -p ~/.config/nvim
-cp init.lua ~/.config/nvim/init.lua
-```
-
-Then open Neovim:
-
-```bash
-nvim
-```
-
-Inside Neovim, run:
-
-```vim
-:Lazy sync
-```
-
-Restart VSCode after installation.
-
-## Philosophy
-
-This is not a full Neovim distribution.
-
-It is a lightweight VSCode Neovim starter focused on:
-
-- fast file navigation,
-- practical code navigation,
-- surround editing,
-- low plugin count,
-- fewer conflicts,
-- better productivity inside VSCode.
-
-## Leader key
+## Keybindings
 
 The leader key is:
 
@@ -126,21 +27,9 @@ The leader key is:
 Space
 ```
 
-So when you see:
+So `Space s f` means: press `Space`, then `s`, then `f`.
 
-```txt
-Space s f
-```
-
-it means:
-
-```txt
-Press Space, then s, then f
-```
-
-## Keybindings
-
-### File and project navigation
+### Search and navigation
 
 | Shortcut | Action |
 |---|---|
@@ -171,11 +60,6 @@ Press Space, then s, then f
 | `g r` | Go to references |
 | `g i` | Go to implementation |
 | `K` | Show hover documentation |
-
-### Code actions
-
-| Shortcut | Action |
-|---|---|
 | `Space c a` | Code action |
 | `Space r n` | Rename symbol |
 | `] d` | Next problem |
@@ -203,16 +87,6 @@ Press Space, then s, then f
 
 This config includes `mini.surround`.
 
-It allows you to add, delete and replace surrounding characters such as:
-
-```txt
-{}
-()
-[]
-""
-''
-```
-
 ### Add surround in visual mode
 
 Select text with visual mode:
@@ -221,7 +95,7 @@ Select text with visual mode:
 v
 ```
 
-Then use one of these commands:
+Then use:
 
 | Command | Result |
 |---|---|
@@ -239,7 +113,7 @@ Example:
 hello
 ```
 
-Select `hello` with visual mode and press:
+Select `hello` and press:
 
 ```vim
 sa}
@@ -249,18 +123,6 @@ Result:
 
 ```txt
 {hello}
-```
-
-With spaces:
-
-```vim
-sa{
-```
-
-Result:
-
-```txt
-{ hello }
 ```
 
 ### Add surround around a word
@@ -311,8 +173,6 @@ word
 
 ### Replace surround
 
-Example:
-
 ```vim
 sr)}
 ```
@@ -329,6 +189,179 @@ into:
 {word}
 ```
 
+## Requirements
+
+You need:
+
+- VSCode
+- VSCode Neovim extension
+- Neovim
+- Git
+
+Recommended VSCode settings:
+
+```json
+{
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoSurround": "languageDefined"
+}
+```
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/utku-gaspak/vscode-neovim-productivity-kit.git
+cd vscode-neovim-productivity-kit
+```
+
+### Linux, macOS and WSL
+
+Run:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Then open Neovim:
+
+```bash
+nvim
+```
+
+Inside Neovim, run:
+
+```vim
+:Lazy sync
+```
+
+Restart VSCode after installation.
+
+### Windows native
+
+For native Windows, install manually.
+
+Typical Neovim config location:
+
+```txt
+%LOCALAPPDATA%\nvim\init.lua
+```
+
+Create the folder if needed:
+
+```powershell
+mkdir $env:LOCALAPPDATA\nvim
+```
+
+Copy `init.lua` into:
+
+```txt
+%LOCALAPPDATA%\nvim\init.lua
+```
+
+Then open Neovim and run:
+
+```vim
+:Lazy sync
+```
+
+Restart VSCode after installation.
+
+## Platform setup
+
+### Linux
+
+Check your Neovim path:
+
+```bash
+which nvim
+```
+
+Recommended VSCode setting:
+
+```json
+{
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
+}
+```
+
+### macOS
+
+Install Neovim, for example with Homebrew:
+
+```bash
+brew install neovim
+```
+
+Check your Neovim path:
+
+```bash
+which nvim
+```
+
+Apple Silicon usually uses:
+
+```json
+{
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim"
+}
+```
+
+Intel Macs usually use:
+
+```json
+{
+  "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim"
+}
+```
+
+### Windows with WSL
+
+Recommended for Windows users who develop inside WSL.
+
+Install Neovim inside WSL:
+
+```bash
+sudo apt update
+sudo apt install neovim
+```
+
+Recommended VSCode settings:
+
+```json
+{
+  "vscode-neovim.useWSL": true,
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
+}
+```
+
+Check your WSL Neovim path:
+
+```bash
+which nvim
+```
+
+### Windows native
+
+Check your Neovim path in PowerShell:
+
+```powershell
+where.exe nvim
+```
+
+Recommended VSCode setting:
+
+```json
+{
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe"
+}
+```
+
+Adjust the path if Neovim is installed somewhere else.
+
 ## Auto pairs
 
 Auto pairs are handled by VSCode, not by a Neovim plugin.
@@ -343,7 +376,7 @@ Recommended VSCode settings:
 }
 ```
 
-This means:
+This gives you:
 
 | Input | Result |
 |---|---|
@@ -351,19 +384,9 @@ This means:
 | `"` | `""` |
 | Select text and type `{` | `{text}` |
 
-## Recommended VSCode extensions
-
-Optional but useful:
-
-- VSCode Neovim
-- GitLens
-- Error Lens
-- Todo Tree
-- StyLua
-
 ## Why not use many Neovim plugins?
 
-VSCode already provides excellent support for:
+VSCode already provides strong support for:
 
 - LSP
 - formatting
@@ -380,25 +403,29 @@ The goal is:
 
 ```txt
 Neovim = modal editing and text manipulation
-VSCode = editor platform, UI, language tools and project workflow
+VSCode = editor platform and project workflow
 ```
+
+## Recommended VSCode extensions
+
+Optional but useful:
+
+- VSCode Neovim
+- GitLens
+- Error Lens
+- Todo Tree
+- StyLua
 
 ## Updating
 
-If you installed the config through Git:
+If you cloned this repo directly into your Neovim config folder:
 
 ```bash
 cd ~/.config/nvim
 git pull
 ```
 
-Then open Neovim:
-
-```bash
-nvim
-```
-
-Inside Neovim:
+Then open Neovim and run:
 
 ```vim
 :Lazy sync
@@ -408,10 +435,16 @@ Restart VSCode after updating.
 
 ## Uninstall
 
-Remove the config:
+Linux, macOS or WSL:
 
 ```bash
 rm -rf ~/.config/nvim
+```
+
+Windows native:
+
+```powershell
+Remove-Item -Recurse -Force $env:LOCALAPPDATA\nvim
 ```
 
 If the installer created a backup, restore it manually from:
@@ -436,16 +469,13 @@ Check the Neovim path:
 which nvim
 ```
 
-Then verify your VSCode settings.
+On Windows native:
 
-For WSL users, this is often needed:
-
-```json
-{
-  "vscode-neovim.useWSL": true,
-  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
-}
+```powershell
+where.exe nvim
 ```
+
+Then verify the matching VSCode setting for your platform.
 
 ### Surround does not work
 
@@ -457,7 +487,7 @@ Open Neovim and run:
 
 Then restart VSCode.
 
-Try again with:
+Test with:
 
 ```vim
 saiw}
@@ -465,7 +495,7 @@ saiw}
 
 ### Auto pairs do not work
 
-Auto pairs are controlled by VSCode settings, not by Neovim.
+Auto pairs are controlled by VSCode settings.
 
 Make sure this exists in your VSCode `settings.json`:
 
